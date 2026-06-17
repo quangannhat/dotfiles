@@ -3,7 +3,7 @@
 sudo apt update
 sudo apt install -y i3 stow emacs git ripgrep fd-find \
   x11-xserver-utils dex xss-lock i3lock network-manager-gnome \
-  blueman ibus pulseaudio-utils flameshot rofi i3status
+  blueman ibus pulseaudio-utils flameshot rofi i3status alacritty
 
 # brave-browser isn't in the default apt repos, add its repo first
 if ! command -v brave-browser >/dev/null; then
