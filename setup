@@ -4,7 +4,7 @@ sudo apt update
 sudo apt install -y i3 stow emacs git ripgrep fd-find \
   x11-xserver-utils dex xss-lock i3lock network-manager-gnome \
   blueman ibus pulseaudio-utils flameshot rofi i3status alacritty \
-  software-properties-common
+  software-properties-common tmux
 
 # ibus-bamboo isn't in the default apt repos, add its PPA first
 if ! command -v ibus-bamboo >/dev/null; then
@@ -30,6 +30,7 @@ stow alacritty
 stow ibus-bamboo
 stow emacs
 stow asdf
+stow tmux
 
 if [ ! -d "$HOME/.config/nvim" ]; then
   git clone git@github.com:quangannhat/nvim.git "$HOME/.config/nvim"
