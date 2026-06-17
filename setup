@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 sudo apt update
-sudo apt install -y i3 stow
+sudo apt install -y i3 stow emacs git ripgrep fd-find
 
 stow i3
+stow emacs
+
+if [ ! -d "$HOME/.config/emacs" ]; then
+  git clone --depth 1 https://github.com/doomemacs/doomemacs "$HOME/.config/emacs"
+  "$HOME/.config/emacs/bin/doom" install
+fi
