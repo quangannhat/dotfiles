@@ -3,7 +3,16 @@
 sudo apt update
 sudo apt install -y i3 stow emacs git ripgrep fd-find \
   x11-xserver-utils dex xss-lock i3lock network-manager-gnome \
-  blueman ibus pulseaudio-utils flameshot rofi i3status alacritty
+  blueman ibus pulseaudio-utils flameshot rofi i3status alacritty \
+  software-properties-common
+
+# ibus-bamboo isn't in the default apt repos, add its PPA first
+if ! command -v ibus-bamboo >/dev/null; then
+  sudo add-apt-repository -y ppa:bamboo-engine/ibus-bamboo
+  sudo apt update
+  sudo apt install -y ibus-bamboo
+  ibus restart
+fi
 
 # brave-browser isn't in the default apt repos, add its repo first
 if ! command -v brave-browser >/dev/null; then
@@ -18,6 +27,7 @@ fi
 stow i3
 stow i3status
 stow alacritty
+stow ibus-bamboo
 stow emacs
 stow asdf
 
