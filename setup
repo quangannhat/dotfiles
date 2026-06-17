@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
 sudo apt update
-sudo apt install -y i3 stow emacs git ripgrep fd-find
+sudo apt install -y i3 stow emacs git ripgrep fd-find \
+  x11-xserver-utils dex xss-lock i3lock network-manager-gnome \
+  blueman ibus pulseaudio-utils flameshot rofi i3status
+
+# brave-browser isn't in the default apt repos, add its repo first
+if ! command -v brave-browser >/dev/null; then
+  sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+    https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+  echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" \
+    | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+  sudo apt update
+  sudo apt install -y brave-browser
+fi
 
 stow i3
 stow emacs
