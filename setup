@@ -16,6 +16,8 @@ if ! command -v brave-browser >/dev/null; then
 fi
 
 stow i3
+stow i3status
+stow alacritty
 stow emacs
 stow asdf
 
