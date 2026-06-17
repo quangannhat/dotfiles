@@ -57,3 +57,12 @@ asdf plugin add dotnet
 asdf install dotnet 10.0.300
 
 grep -qF 'DOTNET_ROOT' "$HOME/.bashrc" || echo 'export DOTNET_ROOT="$HOME/.asdf/installs/dotnet/10.0.300"' >> "$HOME/.bashrc"
+
+# rust, via rustup, for tree-sitter-cli
+if ! command -v rustc >/dev/null; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+fi
+grep -qF '.cargo/env' "$HOME/.bashrc" || echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
+. "$HOME/.cargo/env"
+
+cargo install tree-sitter-cli
