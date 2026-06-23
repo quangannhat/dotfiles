@@ -39,17 +39,16 @@
 ;; Mason (Neovim) installs LSP servers here — make them visible to eglot
 (add-to-list 'exec-path (expand-file-name "~/.local/share/nvim/mason/bin"))
 
+;; `go install` puts binaries (gopls, gomodifytags, gotests, gore, ...) here —
+;; not on PATH for GUI-launched Emacs since it's only added in ~/.bashrc
+(add-to-list 'exec-path (expand-file-name "~/go/bin"))
+
 (map! :leader :desc "Format buffer" "c f" #'eglot-format-buffer)
 
 ;; eglot's default csharp-mode entry tries omnisharp before csharp-ls, but
 ;; omnisharp's bundled MSBuild struggles to load large/multi-project .sln
 ;; files against newer SDKs and can blow past eglot-connect-timeout. Prefer
 ;; the Roslyn-based csharp-ls instead.
-(with-eval-after-load 'eglot
-  (setf (alist-get '(csharp-mode csharp-ts-mode) eglot-server-programs
-                    nil nil #'equal)
-        '("csharp-ls")))
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)

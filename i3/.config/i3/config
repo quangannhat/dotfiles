@@ -12,7 +12,9 @@
 set $mod Mod4
 
 # Remap Caps Lock to act as Escape
-exec --no-startup-id setxkbmap -option caps:escape
+# Delayed because ibus-daemon (started below) resets XKB options on init,
+# clobbering this if it runs first
+exec --no-startup-id sh -c "sleep 1 && setxkbmap -option caps:escape"
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -39,10 +41,9 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id ibus-daemon -drx
 
-# Startup apps: emacs on workspace 1, brave on workspace 2
-assign [class="Emacs"] 1
+# Startup apps: terminal on workspace 1, brave on workspace 2
 assign [class="Brave-browser"] 2
-exec --no-startup-id i3-msg 'workspace 1; exec emacs'
+exec --no-startup-id i3-msg 'workspace 1; exec kitty'
 exec --no-startup-id i3-msg 'workspace 2; exec brave-browser'
 
 # Use pactl to adjust volume in PulseAudio.
@@ -66,7 +67,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
