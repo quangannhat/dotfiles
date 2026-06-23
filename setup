@@ -3,7 +3,7 @@
 sudo apt update
 sudo apt install -y i3 stow emacs git ripgrep fd-find \
   x11-xserver-utils dex xss-lock i3lock network-manager-gnome \
-  blueman ibus pulseaudio-utils flameshot rofi i3status alacritty \
+  blueman ibus pulseaudio-utils flameshot rofi i3status kitty \
   software-properties-common tmux
 
 # ibus-bamboo isn't in the default apt repos, add its PPA first
@@ -27,7 +27,6 @@ fi
 cd "$(dirname "$(readlink -f "$0")")"
 stow i3
 stow i3status
-stow alacritty
 stow kitty
 stow ibus-bamboo
 stow emacs
