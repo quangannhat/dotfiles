@@ -24,9 +24,11 @@ if ! command -v brave-browser >/dev/null; then
   sudo apt install -y brave-browser
 fi
 
+cd "$(dirname "$(readlink -f "$0")")"
 stow i3
 stow i3status
 stow alacritty
+stow kitty
 stow ibus-bamboo
 stow emacs
 stow asdf
