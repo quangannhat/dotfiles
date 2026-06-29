@@ -55,9 +55,9 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 
 # Screenshots with flameshot (GNOME-like, auto-saved, no save dialog)
 set $screenshot_dir /home/quangan/Pictures/Screenshots
-bindsym Print exec --no-startup-id flameshot gui -p $screenshot_dir
-bindsym Shift+Print exec --no-startup-id flameshot full -p $screenshot_dir
-bindsym Ctrl+Print exec --no-startup-id flameshot screen -p $screenshot_dir
+bindsym Print exec --no-startup-id flameshot gui -c -p $screenshot_dir
+bindsym Shift+Print exec --no-startup-id flameshot full -c -p $screenshot_dir
+bindsym Ctrl+Print exec --no-startup-id flameshot screen -c -p $screenshot_dir
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -111,7 +111,8 @@ bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+# (moved off $mod+f so Super+f passes through to the terminal for word movement)
+bindsym $mod+z fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
