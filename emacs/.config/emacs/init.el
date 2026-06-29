@@ -30,15 +30,21 @@
       use-short-answers t              ; y/n instead of yes/no
       create-lockfiles nil)
 
-;; Keep the working tree clean: stash backups/autosaves out of the way.
+;; Turn off auto-save (the #file# recovery files).
+(setq auto-save-default nil)
+
+;; Keep the working tree clean: stash backups out of the way.
+;; (auto-save-file-name-transforms is harmless but unused while auto-save is off.)
 (setq backup-directory-alist `((".*" . ,(expand-file-name "backups/" user-emacs-directory)))
       auto-save-file-name-transforms `((".*" ,(expand-file-name "auto-saves/" user-emacs-directory) t)))
 
 (setq-default indent-tabs-mode nil    ; spaces, not tabs
               tab-width 4)
 
+(setq display-line-numbers-type 'relative)  ; vim-style; current line shows absolute number
 (global-display-line-numbers-mode 1)
 (column-number-mode 1)
+(blink-cursor-mode -1)                 ; steady (non-blinking) cursor
 (save-place-mode 1)                    ; remember point per file
 (recentf-mode 1)
 (savehist-mode 1)
@@ -56,13 +62,50 @@
         evil-want-C-u-scroll t         ; C-u scrolls like vim (not universal-arg)
         evil-undo-system 'undo-redo)   ; use Emacs 28+ native undo/redo
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  ;; Recenter (like pressing zz) right after C-d / C-u scroll.
+  (defun my/evil-scroll-recenter (&rest _)
+    (recenter))
+  (advice-add 'evil-scroll-down :after #'my/evil-scroll-recenter)
+  (advice-add 'evil-scroll-up   :after #'my/evil-scroll-recenter))
 
 ;; Extend vim keys to built-in buffers (dired, help, etc.).
 (use-package evil-collection
   :after evil
   :config
   (evil-collection-init))
+
+;; ---------------------------------------------------------------------------
+;; Git: magit
+;; ---------------------------------------------------------------------------
+(use-package magit
+  :bind (("C-x g" . magit-status)))
+
+;; ---------------------------------------------------------------------------
+;; Leader key (SPC), via general.el
+;; ---------------------------------------------------------------------------
+(use-package general
+  :after evil
+  :config
+  ;; Make the override keymap active so the leader beats mode-local maps.
+  (general-override-mode 1)
+  ;; Defines `my/leader' as the SPC prefix in normal/visual/motion states,
+  ;; with M-SPC as a fallback for insert/emacs states. No bindings yet.
+  (general-create-definer my/leader
+    :states '(normal visual motion)
+    :keymaps 'override
+    :prefix "SPC"
+    :global-prefix "M-SPC")
+  (my/leader
+    "ff" #'find-file       ; SPC f f -> find file
+    "gg" #'magit-status))  ; SPC g g -> magit status
+
+;; ---------------------------------------------------------------------------
+;; Theme
+;; ---------------------------------------------------------------------------
+(use-package gruber-darker-theme
+  :config
+  (load-theme 'gruber-darker t))   ; t = don't prompt for confirmation
 
 ;; ---------------------------------------------------------------------------
 ;; Keep customize out of init.el
