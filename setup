@@ -29,6 +29,10 @@ stow i3
 stow i3status
 stow kitty
 stow ibus-bamboo
+# ensure the target dir exists so stow file-links into it instead of folding
+# the whole dir into a single symlink (keeps generated files like elpa/, custom.el
+# out of the repo)
+mkdir -p "$HOME/.config/emacs"
 stow emacs
 stow asdf
 stow tmux
@@ -36,11 +40,6 @@ stow tmux
 if [ ! -d "$HOME/.config/nvim" ]; then
   git clone git@github.com:quangannhat/nvim.git "$HOME/.config/nvim"
   (cd "$HOME/.config/nvim" && git checkout april_2026)
-fi
-
-if [ ! -d "$HOME/.config/emacs" ]; then
-  git clone --depth 1 https://github.com/doomemacs/doomemacs "$HOME/.config/emacs"
-  "$HOME/.config/emacs/bin/doom" install
 fi
 
 # asdf is built from source against a manually installed Go toolchain
