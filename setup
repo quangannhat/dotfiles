@@ -29,10 +29,6 @@ stow i3
 stow i3status
 stow kitty
 stow ibus-bamboo
-# ~/.config/emacs must exist as a real dir so stow links the config files
-# individually rather than folding the whole dir into one symlink (Emacs writes
-# elpa/, eln-cache/, custom.el, etc. in here and those must stay out of the repo).
-mkdir -p "$HOME/.config/emacs"
 stow emacs
 stow asdf
 stow tmux
@@ -42,8 +38,10 @@ if [ ! -d "$HOME/.config/nvim" ]; then
   (cd "$HOME/.config/nvim" && git checkout april_2026)
 fi
 
-# Emacs config is a vanilla setup stowed above; packages auto-install on first
-# launch via use-package (:ensure). No bootstrap clone needed.
+if [ ! -d "$HOME/.config/emacs" ]; then
+  git clone --depth 1 https://github.com/doomemacs/doomemacs "$HOME/.config/emacs"
+  "$HOME/.config/emacs/bin/doom" install
+fi
 
 # asdf is built from source against a manually installed Go toolchain
 GO_VERSION=1.26.2
