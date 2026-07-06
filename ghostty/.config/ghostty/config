@@ -1,0 +1,20 @@
+theme = Catppuccin Mocha
+
+font-family = FiraCode Nerd Font Mono
+font-size = 13
+adjust-cell-height = 10%
+
+cursor-style = bar
+cursor-style-blink = false
+
+window-padding-y = 10
+window-decoration = true
+
+background-opacity = 0.92
+background-blur = true
+
+copy-on-select = true
+mouse-hide-while-typing = true
+
+scrollback-limit = 100000
+shell-integration-features = cursor,sudo,title

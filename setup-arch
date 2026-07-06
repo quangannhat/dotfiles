@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+sudo pacman -Syu --needed --noconfirm \
+  hyprland waybar hypridle hyprlock hyprpaper \
+  ghostty dunst wofi flameshot grim slurp wl-clipboard \
+  ibus ibus-unikey polkit-kde-agent \
+  network-manager-applet nm-connection-editor brightnessctl playerctl \
+  wireplumber pipewire-pulse \
+  xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland \
+  firefox dolphin stow emacs git ripgrep fd tmux go
+
+# ibus-unikey (Vietnamese input) engine order: US keyboard + Unikey, no picker popup needed
+gsettings set org.freedesktop.ibus.general preload-engines "['xkb:us::eng', 'Unikey']"
+gsettings set org.freedesktop.ibus.general engines-order "['xkb:us::eng', 'Unikey']"
+
+cd "$(dirname "$(readlink -f "$0")")"
+stow hypr
+stow waybar
+stow ghostty
+stow dunst
+# ensure the target dir exists so stow file-links into it instead of folding
+# the whole dir into a single symlink (keeps generated files like elpa/, custom.el
+# out of the repo)
+mkdir -p "$HOME/.config/emacs"
+stow emacs
+stow asdf
+stow tmux
+
+if [ ! -d "$HOME/.config/nvim" ]; then
+  git clone git@github.com:quangannhat/nvim.git "$HOME/.config/nvim"
+  (cd "$HOME/.config/nvim" && git checkout april_2026)
+fi
+
+ASDF_INSTALL="$HOME/installs/asdf"
+if [ ! -d "$ASDF_INSTALL" ]; then
+  git clone --depth 1 https://github.com/asdf-vm/asdf.git "$ASDF_INSTALL"
+  (cd "$ASDF_INSTALL" && go build -ldflags='-s' -o bin/asdf ./cmd/asdf)
+fi
+
+if ! grep -qF 'ASDF_INSTALL' "$HOME/.bashrc"; then
+  cat >> "$HOME/.bashrc" <<'EOF'
+
+# asdf
+export ASDF_INSTALL="$HOME/installs/asdf"
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$ASDF_INSTALL/bin:$ASDF_DATA_DIR/shims:$PATH"
+EOF
+fi
+export ASDF_INSTALL="$HOME/installs/asdf"
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$ASDF_INSTALL/bin:$ASDF_DATA_DIR/shims:$PATH"
+
+asdf plugin add dotnet
+asdf install dotnet 10.0.300
+
+grep -qF 'DOTNET_ROOT' "$HOME/.bashrc" || echo 'export DOTNET_ROOT="$HOME/.asdf/installs/dotnet/10.0.300"' >> "$HOME/.bashrc"
+
+# rust, via rustup, for tree-sitter-cli
+if ! command -v rustc >/dev/null; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+fi
+grep -qF '.cargo/env' "$HOME/.bashrc" || echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
+. "$HOME/.cargo/env"
+
+cargo install tree-sitter-cli

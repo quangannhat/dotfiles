@@ -1,0 +1,11 @@
+{
+  "ws_active": "0xf111",
+  "ws_default": "0xf111",
+  "cpu": "0xf2db",
+  "mem": "0xf233",
+  "eth": "0xf1e6",
+  "vol_off": "0xf026",
+  "vol_low": "0xf027",
+  "vol_high": "0xf028",
+  "lock": "0xf023"
+}

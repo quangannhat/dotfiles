@@ -1,0 +1,97 @@
+* {
+    font-family: "FiraCode Nerd Font", "Font Awesome 7 Free";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(26, 26, 26, 0.85);
+    color: #e0e0e0;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#workspaces,
+#window,
+#clock,
+#custom-ibus,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#tray,
+#custom-lock,
+#custom-power {
+    padding: 0 10px;
+    margin: 4px 2px;
+}
+
+#custom-ibus {
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+#custom-ibus.en {
+    color: #33ccff;
+}
+
+#custom-ibus.vi {
+    color: #ffcc00;
+}
+
+#workspaces button {
+    padding: 0 6px;
+    color: #808080;
+    background: transparent;
+    border-radius: 8px;
+}
+
+#workspaces button.active {
+    color: #1a1a1a;
+    background: #33ccff;
+}
+
+#workspaces button.empty {
+    color: #4a4a4a;
+}
+
+#workspaces button:hover {
+    background: rgba(0, 255, 153, 0.2);
+    color: #e0e0e0;
+}
+
+#window {
+    color: #a0a0a0;
+    font-style: italic;
+}
+
+#clock {
+    font-weight: bold;
+    color: #33ccff;
+}
+
+#pulseaudio.muted {
+    color: #ff6b6b;
+}
+
+#network.disconnected {
+    color: #ff6b6b;
+}
+
+#custom-lock,
+#custom-power {
+    color: #00ff99;
+}
+
+#custom-power:hover,
+#custom-lock:hover {
+    color: #33ccff;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
